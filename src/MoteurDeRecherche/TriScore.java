@@ -1,29 +1,27 @@
 package MoteurDeRecherche;
 
 import java.util.List;
-import java.util.Collections;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+//import java.util.ArrayList;
 import java.util.Comparator;
 
 public class TriScore {
-    public List<Scoreur> listeDesScores;
-
-    public TriScore(List<Scoreur> listeDesScores) {
-        this.listeDesScores = listeDesScores;
-    }
-
-    public List<Scoreur> ordonnerScores(List<Index> listeDesIndex) {
-    	for(Index index:listeDesIndex) {
-    		Collections.sort(listeDesScores, new Comparator<Scoreur>() {
-    			@Override
-    			public int compare(Scoreur scoreur1, Scoreur scoreur2) {
-    				double score1 = scoreur1.calculerScore(index.getStatMot());
-    				double score2 = scoreur2.calculerScore(index.getStatMot());
-    				return Double.compare(score1, score2);
-    			}
-    		});
-
-    		return listeDesScores;
+    
+    public Map<String, Double> ordonnerScores(List<Stat> listStat) {
+    	Map<String, Double> FichierScore = new HashMap<>();
+    	for(Stat stat : listStat) {
+    		//String chemin = "C:/Users/MSI/eclipse-workspace/MiniProjet/src/petit_corpus/"+stat.getFichier();
+    		//LecteurMotParMot motParMot=new LecteurMotParMot();
+    		//List<String> fichier = new ArrayList<>();
+    		//fichier=motParMot.lire(chemin);
+    		
+    		FichierScore.put(stat.getNomFichier(),new Scoreur().calculerScore(stat));
     	}
-    	return null;
+    	return FichierScore.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, HashMap::new));
     }
 }

@@ -1,12 +1,17 @@
 package MoteurDeRecherche;
 
+import java.util.List;
 
 public class Scoreur {
-	Index index;
+	
 	public Scoreur() {}
 	public double calculerScore(Stat stat) {
 		double score;
-		score=stat.getOcc()/stat.getFichier().length();
+		//determination de chemin de fichier a partir de stat 
+		String folder = "C:/Users/MSI/eclipse-workspace/MiniProjet/src/petit_corpus/"; //voici chemin de mon dossier 
+		List<String> fichier = stat.getContinueFichier(folder+stat.getNomFichier());
+		
+		score=(double)stat.getOcc()/(double)fichier.size();
 		return score;
 	}
 	public double getScore(Stat stat) {

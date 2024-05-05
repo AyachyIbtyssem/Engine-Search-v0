@@ -16,10 +16,19 @@ public class MotOcc {
 	public int getOcc() {
 		return this.occ;
 	}
-	public void setOcc(int occ) {
-		this.occ=occ;
+	public void incrementer() {
+		this.occ=+1;
 	}
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ mot: ").append(getMot())
+          .append(", occ: ").append(getOcc())
+          .append("]").append("\n");
+        return sb.toString();
+    }
 
+
+	
 
 
 }
