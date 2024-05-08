@@ -8,21 +8,18 @@ public class MotOcc {
 		this.occ=occ;
 	}
 	public String getMot() {
-		return this.mot;
-	}
-	public void setMot(String mot) {
-		this.mot=mot;
+		return mot;
 	}
 	public int getOcc() {
-		return this.occ;
+		return occ;
 	}
 	public void incrementer() {
-		this.occ=+1;
+		occ=+1;
 	}
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("[ mot: ").append(getMot())
-          .append(", occ: ").append(getOcc())
+        sb.append("[ mot: ").append(mot)
+          .append(", occ: ").append(occ)
           .append("]").append("\n");
         return sb.toString();
     }

@@ -1,25 +1,30 @@
 package MoteurDeRecherche;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Index {
-	private List<Stat> listeDesStat;
-	public Index(List<Stat> listeDesStat) {
-		this.listeDesStat = listeDesStat;
-	}
+	private List<Stat> listeDesStat= new ArrayList<Stat>();
 	
-	public List<Stat> getListStat(){
+	public List<Stat> getIndex(){
 		return this.listeDesStat;
 	}
-	public Stat getStatMot(String mot){
+	public List<Stat> getStatMot(String mot){
+		List<Stat> result = new ArrayList<Stat>();
 		for(Stat stat :listeDesStat) {
 			if(stat.getMot().equals(mot))
-				return stat;
+				result.add(stat);
 		}
-		return null;
+		return result;
 	}
-	public void ajouterStat(Stat stat) {
+	void ajouterStat(Stat stat) {
 		listeDesStat.add(stat);
+	}
+	void removeFile(String chemin) {
+		for(Stat stat : listeDesStat ) {
+			if(stat.getChemin().equals(chemin)) 
+				listeDesStat.remove(stat);
+		}
 	}
 
 }
