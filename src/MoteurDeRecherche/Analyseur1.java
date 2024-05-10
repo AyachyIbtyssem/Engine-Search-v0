@@ -4,9 +4,9 @@ package MoteurDeRecherche;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Analyseur1{
+public class Analyseur1 implements Analyseur{
 
-	public static List<MotOcc> analyser( List<String> listeMots){
+	public List<MotOcc> analyser( List<String> listeMots){
 		List<MotOcc> listeDesMotOcc=new ArrayList<MotOcc>();
 		for(String mot: listeMots){
 			boolean motExist=false;

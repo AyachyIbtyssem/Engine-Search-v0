@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Index {
-	private List<Stat> listeDesStat= new ArrayList<Stat>();
-	
+	private List<Stat> listeDesStat;
+	public Index() {
+		listeDesStat=new ArrayList<Stat>();
+	}
 	public List<Stat> getIndex(){
 		return this.listeDesStat;
 	}

@@ -7,28 +7,45 @@ import java.util.List;
 //import java.util.Map;
 
 public class MoteurDeRecherche {
-	Index index;
-	   private void indexDirectory(String path){
-	        File pathFile = Paths.get(path).toFile();
-	        File[] files = pathFile.listFiles();
-	        for(File f: files ){
-	            if(f.isDirectory()){
-	                indexDirectory(f.getAbsolutePath());
-	            }else{
-	                indexSingleDocument(f.getAbsolutePath());
-	            }
-	        }
-	    }
+
+	Index index ;
+	List<Traiteur> listTraiteur;
+	LecteurMotParMot lecteur;
+	Analyseur analyseur;
+
+	public MoteurDeRecherche(Index index,List<Traiteur> listTraiteur,LecteurMotParMot lecteur,Analyseur analyseur) {
+		this.index=index;
+		this.listTraiteur=listTraiteur;
+		this.lecteur=lecteur;
+		this.analyseur=analyseur;
+	}
+	
+	private void indexDirectory(String path){
+        File pathFile = Paths.get(path).toFile();
+        File[] files = pathFile.listFiles();
+        for(File f: files ){
+            if(f.isDirectory()){
+                indexDirectory(f.getAbsolutePath());
+            }else{
+                indexSingleDocument(f.getAbsolutePath());
+            }
+        }
+    }
 	
     private void indexSingleDocument(String path){
-    	LecteurMotParMot motParMot=new LecteurMotParMot();
     	List<String> file = new ArrayList<String>();
-    	file = motParMot.lire(path);
-    	List<MotOcc> listMotOcc = new ArrayList<MotOcc>();
-    	listMotOcc = Analyseur1.analyser(file);
-    	for(MotOcc m : listMotOcc) {
-    		index.ajouterStat(new Stat(m.getMot(),m.getOcc(), path));
-    	}
+		file = lecteur.lire(path);
+		List<String> fileTraite = file;
+		
+		for(Traiteur traiteur : listTraiteur) {
+			fileTraite=traiteur.traiter(fileTraite);
+		}
+		
+		List<MotOcc> listMotOcc = new ArrayList<MotOcc>();
+		listMotOcc = analyseur.analyser(fileTraite);
+		for(MotOcc m : listMotOcc) {
+			index.ajouterStat(new Stat(m.getMot(),m.getOcc(), path));
+		}
     }
     public void index(String path){
         File filePath = Paths.get(path).toFile();
@@ -39,10 +56,17 @@ public class MoteurDeRecherche {
                 indexSingleDocument(path);
             }
         }
+        System.out.println(index.getIndex());
     }
-	public List<Stat> rechercher(List<String> requette){ 
+	public List<Stat> rechercher(List<String> requete){ 
 		List<Stat> listDesStat = new ArrayList<Stat>();
-		for(String mot : requette) {
+		List<String> requeteTraitee = requete;
+
+		for(Traiteur traiteur : listTraiteur) {
+			requeteTraitee=traiteur.traiter(requeteTraitee);
+		}
+		
+		for(String mot : requeteTraitee) {
 			for(Stat stat : index.getIndex()) {
 				if(stat.getMot().equals(mot)) {
 					listDesStat.add(stat);
